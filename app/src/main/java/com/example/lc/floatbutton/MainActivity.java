@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCloseItemClick() {
                 Toast.makeText(MainActivity.this,"关闭",Toast.LENGTH_SHORT).show();
-                dialog.openOrCloseMenu();
+                mask.hide();
+                dialog.dismiss();
             }
 
             @Override

@@ -104,8 +104,8 @@ public abstract class BaseFloatDailog {
      */
     private int mScreenHeight;
 
-    private int offsetToTop=200;//移动时距离顶部的距离，默认为100
-    private int offsetBottom=100;//移动时距离底部的距离，默认为50
+    private int mOffsetToTop;//移动时距离顶部的距离，默认为100
+    private int mOffsetToBottom =0;//移动时距离底部的距离，默认为0
 
     /**
      * 来自 activity 的 wManager
@@ -195,12 +195,12 @@ public abstract class BaseFloatDailog {
         return mActivity;
     }
 
-    public void setOffsetToTop(int offsetToTop) {
-        this.offsetToTop = offsetToTop;
+    public void setmOffsetToTop(int mOffsetToTop) {
+        this.mOffsetToTop = mOffsetToTop;
     }
 
-    public void setOffsetBottom(int offsetBottom) {
-        this.offsetBottom=offsetBottom;
+    public void setmOffsetToBottom(int mOffsetToBottom) {
+        this.mOffsetToBottom = mOffsetToBottom;
     }
 
     public static class FloatDialogImp extends BaseFloatDailog {
@@ -279,6 +279,8 @@ public abstract class BaseFloatDailog {
         initFloatWindow();
         initTimer();
         initFloatView();
+        //设置距离顶部的偏移
+        mOffsetToTop =UiUtils.getStatusBarHeight(mActivity);
     }
 
     protected BaseFloatDailog(Context context) {
@@ -286,7 +288,8 @@ public abstract class BaseFloatDailog {
         initFloatWindow();
         initTimer();
         initFloatView();
-
+        //设置距离顶部的偏移
+        mOffsetToTop =UiUtils.getStatusBarHeight(mActivity);
     }
 
 
@@ -658,11 +661,10 @@ public abstract class BaseFloatDailog {
         try {
             if (!isExpaned) {
                 if (wmParams.y - logoView.getHeight() / 2 <= 0) {
-                    wmParams.y = offsetToTop;
+                    wmParams.y = mOffsetToTop;
                     isDraging = true;
-                }else if (wmParams.y + logoView.getHeight()*2>= mScreenHeight){
-                    Log.d("打印", "wmParams："+wmParams.y+"logoview："+logoView.getHeight()+"sh："+mScreenHeight);
-                    wmParams.y = mScreenHeight-logoView.getHeight()*2-offsetBottom;
+                }else if (wmParams.y + logoView.getHeight()>= mScreenHeight){
+                    wmParams.y = mScreenHeight-logoView.getHeight()- mOffsetToBottom;
                     isDraging = true;
                 }
                 wManager.updateViewLayout(logoView, wmParams);
