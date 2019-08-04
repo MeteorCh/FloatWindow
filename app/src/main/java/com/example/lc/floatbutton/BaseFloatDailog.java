@@ -195,11 +195,11 @@ public abstract class BaseFloatDailog {
         return mActivity;
     }
 
-    public void setmOffsetToTop(int mOffsetToTop) {
+    public void setOffsetToTop(int mOffsetToTop) {
         this.mOffsetToTop = mOffsetToTop;
     }
 
-    public void setmOffsetToBottom(int mOffsetToBottom) {
+    public void setOffsetToBottom(int mOffsetToBottom) {
         this.mOffsetToBottom = mOffsetToBottom;
     }
 
