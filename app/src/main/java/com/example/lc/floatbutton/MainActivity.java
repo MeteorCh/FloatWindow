@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    MyFloatDialog dialog;
+    FloatWindow dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.openOrCloseMenu();
             }
         });
-        dialog=new MyFloatDialog(this, new MyFloatDialog.IOnItemClicked() {
+        dialog=new FloatWindow(this, new FloatWindow.IOnItemClicked() {
             @Override
             public void onBackItemClick() {
                 Toast.makeText(MainActivity.this,"返回",Toast.LENGTH_SHORT).show();
@@ -48,7 +48,16 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.show();
+                dialog.dismiss();
+                dialog.show("返回高级查询中的搜索结果");
+            }
+        });
+        Button textColorBtn=(Button)findViewById(R.id.set_text_color);
+        textColorBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                dialog.show("返回高级查询中有关<font color='red'>“"+"关键字"+"”</font>的搜索结果");
             }
         });
     }

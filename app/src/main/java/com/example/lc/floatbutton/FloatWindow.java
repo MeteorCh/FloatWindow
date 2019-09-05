@@ -3,17 +3,19 @@ package com.example.lc.floatbutton;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 /**
  * Created by wengyiming on 2017/9/13.
  */
 
-public class MyFloatDialog extends BaseFloatDailog {
-
+public class FloatWindow extends BaseFloatDailog {
+    private TextView leftBackText;
+    private TextView rightBackText;
     public interface IOnItemClicked{
         void onBackItemClick();//返回键按下
         void onCloseItemClick();//关闭键按下
@@ -21,22 +23,22 @@ public class MyFloatDialog extends BaseFloatDailog {
         void onExpand();//对话框展开
     }
     IOnItemClicked itemClickedListener;
-    public MyFloatDialog(Context context,IOnItemClicked callBack) {
+    public FloatWindow(Context context, IOnItemClicked callBack) {
         super(context);
         this.itemClickedListener=callBack;
     }
 
     @Override
     protected View getLeftView(LayoutInflater inflater, View.OnTouchListener touchListener) {
-        View view = inflater.inflate(R.layout.layout_menu_left, null);
-        LinearLayout backItem=(LinearLayout)view.findViewById(R.id.back_item);
-        backItem.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.widget_float_window_left, null);
+        leftBackText=(TextView)view.findViewById(R.id.back_item);
+        leftBackText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 itemClickedListener.onBackItemClick();
             }
         });
-        LinearLayout closeItem=(LinearLayout)view.findViewById(R.id.close_item);
+        FrameLayout closeItem=(FrameLayout)view.findViewById(R.id.close_item);
         closeItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,15 +50,15 @@ public class MyFloatDialog extends BaseFloatDailog {
 
     @Override
     protected View getRightView(LayoutInflater inflater, View.OnTouchListener touchListener) {
-        View view = inflater.inflate(R.layout.layout_menu_right, null);
-        LinearLayout backItem=(LinearLayout)view.findViewById(R.id.back_item);
-        backItem.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.widget_float_window_right, null);
+        rightBackText=(TextView)view.findViewById(R.id.back_item);
+        rightBackText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 itemClickedListener.onBackItemClick();
             }
         });
-        LinearLayout closeItem=(LinearLayout)view.findViewById(R.id.close_item);
+        FrameLayout closeItem=(FrameLayout)view.findViewById(R.id.close_item);
         closeItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +70,7 @@ public class MyFloatDialog extends BaseFloatDailog {
 
     @Override
     protected View getLogoView(LayoutInflater inflater) {
-        return inflater.inflate(R.layout.layout_menu_logo, null);
+        return inflater.inflate(R.layout.widget_float_window_logo, null);
     }
 
     @Override
@@ -86,7 +88,7 @@ public class MyFloatDialog extends BaseFloatDailog {
             logoView.setScaleX(1 + offset);
             logoView.setScaleY(1 + offset);
         } else {
-            logoView.setBackgroundResource(R.drawable.float_menu_bg);
+            logoView.setBackgroundResource(R.drawable.widget_float_button_logo_bg);
             logoView.setTranslationX(0);
             logoView.setScaleX(1);
             logoView.setScaleY(1);
@@ -134,5 +136,13 @@ public class MyFloatDialog extends BaseFloatDailog {
                 dismiss();
             }
         }
+    }
+
+    public void show(String info) {
+        super.show();
+        if (leftBackText!=null)
+            leftBackText.setText(Html.fromHtml(info));
+        if (rightBackText!=null)
+            rightBackText.setText(Html.fromHtml(info));
     }
 }
