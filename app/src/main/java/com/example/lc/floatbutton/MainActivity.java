@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.openOrCloseMenu();
             }
         });
-        dialog=new FloatWindow(this, new FloatWindow.IOnItemClicked() {
+        dialog=new FloatWindow(this,1,500, new FloatWindow.IOnItemClicked() {
             @Override
             public void onBackItemClick() {
                 Toast.makeText(MainActivity.this,"返回",Toast.LENGTH_SHORT).show();

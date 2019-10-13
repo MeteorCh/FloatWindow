@@ -23,8 +23,15 @@ public class FloatWindow extends BaseFloatDailog {
         void onExpand();//对话框展开
     }
     IOnItemClicked itemClickedListener;
-    public FloatWindow(Context context, IOnItemClicked callBack) {
-        super(context);
+
+    /**
+     * 构造函数
+     * @param context 上下文
+     * @param location 悬浮窗停靠位置，0为左边，1为右边
+     * @param callBack 点击按钮的回调
+     */
+    public FloatWindow(Context context, int location, int defaultY,IOnItemClicked callBack) {
+        super(context,location,defaultY);
         this.itemClickedListener=callBack;
     }
 

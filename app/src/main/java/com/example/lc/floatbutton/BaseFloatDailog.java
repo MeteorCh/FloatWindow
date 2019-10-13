@@ -55,14 +55,13 @@ public abstract class BaseFloatDailog {
     /**
      * 停靠默认位置
      */
-    private int mDefaultLocation = LEFT;
+    private int mDefaultLocation;
 
 
     /**
      * 悬浮窗 坐落 位置
      */
-    private int mHintLocation = mDefaultLocation;
-
+    private int mHintLocation;
 
     /**
      * 记录当前手指位置在屏幕上的横坐标值
@@ -206,12 +205,8 @@ public abstract class BaseFloatDailog {
     public static class FloatDialogImp extends BaseFloatDailog {
 
 
-        public FloatDialogImp(Context context, GetViewCallback getViewCallback) {
-            super(context, getViewCallback);
-        }
-
-        public FloatDialogImp(Context context) {
-            super(context);
+        public FloatDialogImp(Context context,int defaultY) {
+            super(context,defaultY);
         }
 
         @Override
@@ -270,28 +265,26 @@ public abstract class BaseFloatDailog {
         }
     }
 
-    protected BaseFloatDailog(Context context, GetViewCallback getViewCallback) {
-        this.mActivity=context;
-        this.mGetViewCallback = getViewCallback;
-        if (mGetViewCallback == null) {
-            throw new IllegalArgumentException("GetViewCallback cound not be null!");
-        }
-        initFloatWindow();
-        initTimer();
-        initFloatView();
-        //设置距离顶部的偏移
-        mOffsetToTop =UiUtils.getStatusBarHeight(mActivity);
-    }
-
-    protected BaseFloatDailog(Context context) {
+    /**
+     *
+     * @param context
+     */
+    protected BaseFloatDailog(Context context,int defaultY) {
         this.mActivity = context;
-        initFloatWindow();
+        mDefaultLocation=LEFT;
+        mHintLocation=mDefaultLocation;
+        initFloatWindow(defaultY);
         initTimer();
         initFloatView();
         //设置距离顶部的偏移
         mOffsetToTop =UiUtils.getStatusBarHeight(mActivity);
     }
 
+    protected BaseFloatDailog(Context context,int location,int defaultY){
+        this(context,defaultY);
+        mDefaultLocation=location;
+        mHintLocation=mDefaultLocation;
+    }
 
     private void initFloatView() {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
@@ -352,7 +345,7 @@ public abstract class BaseFloatDailog {
     /**
      * 初始化悬浮球 window
      */
-    private void initFloatWindow() {
+    private void initFloatWindow(int defaultY) {
         wmParams = new WindowManager.LayoutParams();
         if (mActivity instanceof Activity) {
             Activity activity = (Activity) mActivity;
@@ -377,12 +370,13 @@ public abstract class BaseFloatDailog {
         }
         mScreenWidth = wManager.getDefaultDisplay().getWidth();
         mScreenHeight=wManager.getDefaultDisplay().getHeight();
-        int screenHeigth = wManager.getDefaultDisplay().getHeight();
+
         wmParams.format = PixelFormat.RGBA_8888;
         wmParams.gravity = Gravity.LEFT | Gravity.TOP;
         wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
         mHintLocation = getSetting(LOCATION_X, mDefaultLocation);
-        int defaultY = ((screenHeigth) / 2) / 3;
+        if (defaultY<=0)
+            defaultY=(mScreenHeight/2)/3;
         int y = getSetting(LOCATION_Y, defaultY);
         if (mHintLocation == LEFT) {
             wmParams.x = 0;
